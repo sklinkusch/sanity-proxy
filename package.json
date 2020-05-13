@@ -1,0 +1,26 @@
+{
+  "name": "sanity-proxy",
+  "private": true,
+  "version": "1.0.0",
+  "description": "proxy to fetch sanity data without CORS errors",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "nodemon --exec 'micro -p 3001' -w index.js"
+  },
+  "keywords": [
+    "proxy",
+    "sanity.io",
+    "CORS"
+  ],
+  "author": "Stefan Klinkusch",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "micro": "^9.3.4",
+    "now-env": "^3.2.0"
+  }
+}
