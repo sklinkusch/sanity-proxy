@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json")
   const requestUrl = `https://8yon6w8q.api.sanity.io/v1/data/query/production?${query}`
   fetch(requestUrl)
-    .then((response) => response.json)
+    .then((response) => response.json())
     .then((data) => {
       send(res, 200, data)
     })
