@@ -7,7 +7,7 @@ const { send } = require("micro")
 module.exports = async (req, res) => {
   const { query } = parse(req.url)
   console.log(`1: ${query}`)
-  const params = await parseQueryString(query)
+  const params = parseQueryString(query)
   console.log(params)
   const { projectId = "8yon6w8q", mode = "production", ...remaining } = params
   const outputQuery = await putTogetherString(remaining)
@@ -28,24 +28,25 @@ module.exports = async (req, res) => {
     })
 }
 
-const parseQueryString = async function (queryString) {
+const parseQueryString = function (queryString) {
   console.log(`A1: ${queryString}`)
   const params = {}
-  const queryProv = await queryString.match(/query=\*\[.+\]/)
+  const queryProv =
+    queryString.match(/query=\*\[.+\]/) || queryString.match(/query=*%5B.+%5D/)
   console.log(queryProv)
-  const intQueryString = await queryString[0]
+  const intQueryString = queryString[0]
     .replace(queryProv, "")
     .replace("&&", "&")
   console.log(`A3: ${intQueryString}`)
-  const newQueryVal = await queryProv.substr(6)
+  const newQueryVal = queryProv.substr(6)
   if (newQueryVal !== "") {
     params["query"] = newQueryVal
   }
   let newQueryString
   if (intQueryString.startsWith("&")) {
-    newQueryString = await intQueryString.substr(1)
+    newQueryString = intQueryString.substr(1)
   } else {
-    newQueryString = await intQueryString
+    newQueryString = intQueryString
   }
   if (newQueryString !== "" && newQueryString !== undefined) {
     const queries = newQueryString.split("&")
