@@ -31,9 +31,11 @@ module.exports = async (req, res) => {
 const parseQueryString = function (queryString) {
   console.log(`A1: ${queryString}`)
   const params = {}
-  const queryProv = queryString.match(/query=\*\[.+\]/)[0]
-  console.log(`A2: ${queryProv}`)
-  const intQueryString = queryString.replace(queryProv, "").replace("&&", "&")
+  const queryProv = queryString.match(/query=\*\[.+\]/)
+  console.log(`A2: ${queryProv[0]}`)
+  const intQueryString = queryString[0]
+    .replace(queryProv, "")
+    .replace("&&", "&")
   console.log(`A3: ${intQueryString}`)
   const newQueryVal = queryProv.substr(6)
   if (newQueryVal !== "") {
