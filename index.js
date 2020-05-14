@@ -8,7 +8,8 @@ module.exports = async (req, res) => {
   const { query } = parse(req.url)
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Content-Type", "application/json")
-  const requestUrl = `https://8yon6w8q.api.sanity.io/v1/data/query/production?${query}`
+  const projectId = "8yon6w8q"
+  const requestUrl = `https://${projectId}.api.sanity.io/v1/data/query/production?${query}`
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => {
