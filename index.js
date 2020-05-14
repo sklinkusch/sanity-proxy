@@ -24,8 +24,7 @@ module.exports = async (req, res) => {
 
 const parseQueryString = function (queryString) {
   const params = {}
-  let queryProv
-  queryProv = queryString.match(/query=\*\[.+\]/)
+  const queryProv = queryString.match(/query=\*\[.+\]/)
   const intQueryString = queryString
     .replace(queryProv[0], "")
     .replace("&&", "&")
@@ -36,6 +35,8 @@ const parseQueryString = function (queryString) {
   let newQueryString
   if (intQueryString.startsWith("&")) {
     newQueryString = intQueryString.substr(1)
+  } else {
+    newQueryString = intQueryString
   }
   if (newQueryString !== "" && newQueryString !== undefined) {
     const queries = newQueryString.split("&")
