@@ -28,24 +28,24 @@ module.exports = async (req, res) => {
     })
 }
 
-const parseQueryString = function (queryString) {
+const parseQueryString = async function (queryString) {
   console.log(`A1: ${queryString}`)
   const params = {}
-  const queryProv = queryString.match(/query=\*\[.+\]/)
-  console.log(`A2: ${queryProv[0]}`)
-  const intQueryString = queryString[0]
+  const queryProv = await queryString.match(/query=\*\[.+\]/)
+  console.log(queryProv)
+  const intQueryString = await queryString[0]
     .replace(queryProv, "")
     .replace("&&", "&")
   console.log(`A3: ${intQueryString}`)
-  const newQueryVal = queryProv.substr(6)
+  const newQueryVal = await queryProv.substr(6)
   if (newQueryVal !== "") {
     params["query"] = newQueryVal
   }
   let newQueryString
   if (intQueryString.startsWith("&")) {
-    newQueryString = intQueryString.substr(1)
+    newQueryString = await intQueryString.substr(1)
   } else {
-    newQueryString = intQueryString
+    newQueryString = await intQueryString
   }
   if (newQueryString !== "" && newQueryString !== undefined) {
     const queries = newQueryString.split("&")
