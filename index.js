@@ -31,12 +31,12 @@ module.exports = async (req, res) => {
 const parseQueryString = function (queryString) {
   console.log(`A1: ${queryString}`)
   const params = {}
-  const queryProv =
-    queryString.match(/query=\*\[.+\]/) || queryString.match(/query=*%5B.+%5D/)
+  const modQueryString = queryString.replace("%5B", "[").replace("%5D", "]")
+  const queryStart = modQueryString.indexOf("query")
+  const queryEnd = modQueryString.indexOf("]")
+  const queryProv = modQueryString.substr(queryStart, queryEnd - queryStart + 1)
   console.log(queryProv)
-  const intQueryString = queryString
-    .replace(queryProv[0], "")
-    .replace("&&", "&")
+  const intQueryString = modQueryString.substr(queryEnd + 1).replace("&&", "&")
   console.log(`A3: ${intQueryString}`)
   const newQueryVal = queryProv[0].substr(6)
   if (newQueryVal !== "") {
