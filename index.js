@@ -12,15 +12,12 @@ module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Content-Type", "application/json")
   const requestUrl = `https://${projectId}.api.sanity.io/v1/data/query/${mode}?${outputQuery}`
-  console.log(requestUrl)
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
       send(res, 200, data)
     })
     .catch((error) => {
-      console.error(error)
       send(res, 500, error)
     })
 }
@@ -40,15 +37,17 @@ const parseQueryString = function (queryString) {
   if (intQueryString.startsWith("&")) {
     newQueryString = intQueryString.substr(1)
   }
-  const queries = newQueryString.split("&")
-  for (let i = 0; i < queries.length; i++) {
-    const temp = queries[i].split("=")
-    if (temp[0] == "query") {
-      const [queryKey, ...remainder] = temp
-      params[queryKey] = remainder.join("=")
-    } else {
-      const [key, value] = temp
-      params[key] = value
+  if (newQueryString !== "" && newQueryString !== undefined) {
+    const queries = newQueryString.split("&")
+    for (let i = 0; i < queries.length; i++) {
+      const temp = queries[i].split("=")
+      if (temp[0] == "query") {
+        const [queryKey, ...remainder] = temp
+        params[queryKey] = remainder.join("=")
+      } else {
+        const [key, value] = temp
+        params[key] = value
+      }
     }
   }
   return params
