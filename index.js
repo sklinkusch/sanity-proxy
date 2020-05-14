@@ -6,29 +6,36 @@ const { send } = require("micro")
 
 module.exports = async (req, res) => {
   const { query } = parse(req.url)
+  console.log(`1: ${query}`)
   const params = parseQueryString(query)
+  console.log(params)
   const { projectId = "8yon6w8q", mode = "production", ...remaining } = params
   const outputQuery = putTogetherString(remaining)
+  console.log(`2: ${outputQuery}`)
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Content-Type", "application/json")
   const requestUrl = `https://${projectId}.api.sanity.io/v1/data/query/${mode}?${outputQuery}`
+  console.log(`3: ${requestUrl}`)
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data)
       send(res, 200, data)
     })
     .catch((error) => {
+      console.log(error)
       send(res, 500, error)
     })
 }
 
 const parseQueryString = function (queryString) {
+  console.log(`A1: ${queryString}`)
   const params = {}
-  const queryProv = queryString.match(/query=\*\[.+\]/)
-  const intQueryString = queryString
-    .replace(queryProv[0], "")
-    .replace("&&", "&")
-  const newQueryVal = queryProv[0].substr(6)
+  const queryProv = queryString.match(/query=\*\[.+\]/)[0]
+  console.log(`A2: ${queryProv}`)
+  const intQueryString = queryString.replace(queryProv, "").replace("&&", "&")
+  console.log(`A3: ${intQueryString}`)
+  const newQueryVal = queryProv.substr(6)
   if (newQueryVal !== "") {
     params["query"] = newQueryVal
   }
@@ -60,5 +67,6 @@ const putTogetherString = function (queryObject) {
   for (let [key, value] of Object.entries(otherVals)) {
     outputString = `${outputString}&${key}=${value}`
   }
+  console.log(`B1: ${outputString}`)
   return outputString
 }
