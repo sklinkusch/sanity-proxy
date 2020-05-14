@@ -34,11 +34,11 @@ const parseQueryString = function (queryString) {
   const queryProv =
     queryString.match(/query=\*\[.+\]/) || queryString.match(/query=*%5B.+%5D/)
   console.log(queryProv)
-  const intQueryString = queryString[0]
-    .replace(queryProv, "")
+  const intQueryString = queryString
+    .replace(queryProv[0], "")
     .replace("&&", "&")
   console.log(`A3: ${intQueryString}`)
-  const newQueryVal = queryProv.substr(6)
+  const newQueryVal = queryProv[0].substr(6)
   if (newQueryVal !== "") {
     params["query"] = newQueryVal
   }
